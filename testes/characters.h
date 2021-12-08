@@ -1,6 +1,6 @@
 /*
 
- GAMESPRITES.H
+ CHARACTERS.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 15
+  Tiles                : 0 to 45
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define GameSpritesBank 0
+#define charactersBank 0
 /* Start of tile array. */
-extern unsigned char GameSprites[];
+extern unsigned char characters[];
 
-/* End of GAMESPRITES.H */
+/* End of CHARACTERS.H */
