@@ -137,6 +137,12 @@ void setups(){
     setupbotdireita();
 }
 
+/*  void move(UINT8 newx, UINT8 newy){
+    UINT16 indexX, indexY, indexGlobal;
+
+    indexX = (newx - 1)
+} */
+
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
@@ -155,54 +161,64 @@ void main(){
     while(1){
 
         if(joypad() & J_LEFT){
-            x -= 1;
-            principaldireita.spritids[1] = 8;
-            principaldireita.spritids[0] = 9;
-            principaldireita.spritids[3] = 10;
-            principaldireita.spritids[2] = 11;
+            if(x > 25 ){
+                x -= 1;
+                principaldireita.spritids[1] = 8;
+                principaldireita.spritids[0] = 9;
+                principaldireita.spritids[3] = 10;
+                principaldireita.spritids[2] = 11;
 
-            for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i], S_FLIPX);
-            
-            movegamecharacter(&principalatras, -10, -10);
-            movegamecharacter(&principalfrente, -10, -10);
-            movegamecharacter(&principaldireita, x, y);
-            mapx -= 1;
-            scroll_bkg(-1, 0);        
+                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i], S_FLIPX);
+                
+                movegamecharacter(&principalatras, -10, -10);
+                movegamecharacter(&principalfrente, -10, -10);
+                movegamecharacter(&principaldireita, x, y);
+                mapx -= 1;
+                scroll_bkg(-1, 0);                  
+            }
+              
         }
         if(joypad() & J_RIGHT){
-            x += 1;
-            principaldireita.spritids[0] = 8;
-            principaldireita.spritids[1] = 9;
-            principaldireita.spritids[2] = 10;
-            principaldireita.spritids[3] = 11;
+            if(x < 126){
+                x += 1;
+                principaldireita.spritids[0] = 8;
+                principaldireita.spritids[1] = 9;
+                principaldireita.spritids[2] = 10;
+                principaldireita.spritids[3] = 11;
 
-            for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i]);
+                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i]);
 
-            movegamecharacter(&principalatras, -10, -10);
-            movegamecharacter(&principalfrente, -10, -10);
-            movegamecharacter(&principaldireita, x, y);
-            mapx += 1;
-            scroll_bkg(1, 0);
+                movegamecharacter(&principalatras, -10, -10);
+                movegamecharacter(&principalfrente, -10, -10);
+                movegamecharacter(&principaldireita, x, y);
+                mapx += 1;
+                scroll_bkg(1, 0);
+            }
         }
         if(joypad() & J_UP){
-            y -= 1;
+            if(y > 26){
+                y -= 1;
 
-            movegamecharacter(&principalfrente, -10, -10);
-            movegamecharacter(&principaldireita, -10, -10);
-            movegamecharacter(&principalatras, x, y);
+                movegamecharacter(&principalfrente, -10, -10);
+                movegamecharacter(&principaldireita, -10, -10);
+                movegamecharacter(&principalatras, x, y);
 
-            mapy -= 1;
-            scroll_bkg(0, -1); 
+                mapy -= 1;
+                scroll_bkg(0, -1); 
+            }
         }
-        if(joypad() & J_DOWN){
-            y += 1;
-            
-            movegamecharacter(&principalatras, -10, -10);
-            movegamecharacter(&principaldireita, -10, -10);
-            movegamecharacter(&principalfrente, x, y);
+        if(joypad() & J_DOWN ){
+            if(y <= 140){
+                y += 1;
+                
+                movegamecharacter(&principalatras, -10, -10);
+                movegamecharacter(&principaldireita, -10, -10);
+                movegamecharacter(&principalfrente, x, y);
 
-            mapy += 1;
-            scroll_bkg(0, 1);
+                mapy += 1;
+                scroll_bkg(0, 1);
+            }
+
         }
         if(joypad() & J_A){
             printf("%u %u\n",(UINT16)(x),(UINT16)(y));
