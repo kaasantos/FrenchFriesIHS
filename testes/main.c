@@ -1,5 +1,7 @@
 #include <gb/gb.h>
 #include <stdio.h>
+#include "sqgame3_data.c"
+#include "sqgame3_map.c"//tela inicio
 #include "GameCharacter.c" //Criação das structs
 #include "characters.c" //Sprites e frames dos personagens
 #include "background.c" //Sprites do mapa
@@ -15,6 +17,7 @@ struct GameCharacter botdireita;
 
 UBYTE spritesize = 8;
 UINT8 x = 70;
+UINT8 f;
 UINT8 y = 140;
 
 void performantdelay(UINT8 numloops){
@@ -22,6 +25,43 @@ void performantdelay(UINT8 numloops){
     for(j = 0; j < numloops; j++){
         wait_vbl_done();
     }     
+}
+
+void fadeout(){
+	for(f=0;f<4;f++){
+		switch(f){
+			case 0:
+				BGP_REG = 0xE4;
+				break;
+			case 1:
+				BGP_REG = 0xF9;
+				break;
+			case 2:
+				BGP_REG = 0xFE;
+				break;
+			case 3:
+				BGP_REG = 0xFF;	
+				break;						
+		}
+		performantdelay(10);
+	}
+}
+
+void fadein(){
+	for(f=0;f<3;f++){
+		switch(f){
+			case 0:
+				BGP_REG = 0xFE;
+				break;
+			case 1:
+				BGP_REG = 0xF9;
+				break;
+			case 2:
+				BGP_REG = 0xE4;
+				break;					
+		}
+		performantdelay(10);
+	}
 }
 
 void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
@@ -147,16 +187,26 @@ void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
     INT8 i;
-    set_bkg_data(0, 34, TileLabel);
-    set_bkg_tiles(0, 0, 32, 32, mapbackground);
-    scroll_bkg(mapx,mapy);
+
+    set_bkg_data(0, 114, sqgame3_data);
+    set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
+
     SHOW_BKG;
+    DISPLAY_ON;
+
+    waitpad(J_START);
+    fadeout();
+
+    set_bkg_data(0, 34, TileLabel);
+    set_bkg_tiles(0, 0, 32, 32, mapbackground);  	
+    scroll_bkg(mapx,mapy);
+
+	fadein();
 
     set_sprite_data(0, 46, characters);
     setups();
+     
     SHOW_SPRITES;
-
-    DISPLAY_ON;
 
     while(1){
 
