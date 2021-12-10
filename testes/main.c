@@ -187,6 +187,7 @@ void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
     INT8 i;
+    INT8 game = 1;
 
     set_bkg_data(0, 114, sqgame3_data);
     set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
@@ -258,6 +259,7 @@ void main(){
             }
         }
         if(joypad() & J_DOWN ){
+
             if(y <= 140){
                 y += 1;
                 
@@ -271,10 +273,39 @@ void main(){
 
         }
         if(joypad() & J_A){
-            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            game = 0;
         }
-       performantdelay(6);      
+        if(joypad() & J_B){
+            game = 2;
+        }
+        performantdelay(6);  
+
+        //tela de derrota quando game == 0( no momento apertando A "S")
+        if(game ==0){
+            HIDE_SPRITES;
+            while(1){
+                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Lose!");
+                performantdelay(25);
+                if(joypad()){
+                    break;
+                }
+            }
+            break;
+        }
+        //tela de vitoria quando game == 2( no momento apertando B "A")
+        if(game == 2){
+            HIDE_SPRITES;
+            while(1){
+                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Win!");
+                performantdelay(25);
+                if(joypad()){
+                    break;
+                }
+            }
+            break;
+        } 
     }
 
 }
