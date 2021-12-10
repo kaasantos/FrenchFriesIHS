@@ -12,20 +12,17 @@ struct GameCharacter principalatras;
 struct GameCharacter principaldireita;
 struct GameCharacter principalfrente;
 struct Boneca bonecafixa; 
+struct Boneca bonecafixaback;
 struct GameCharacter botfrente;
 struct GameCharacter botatras;
 struct GameCharacter botdireita;
 struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-<<<<<<< HEAD
+UINT8 f = 0;
 UINT8 x = 76;
 UINT8 y = 135;
-=======
-UINT8 x = 70;
-UINT8 f;
-UINT8 y = 140;
->>>>>>> 2185c8e449ed1a7e00651c4973541e9a9e13fbb1
+
 
 void performantdelay(UINT8 numloops){
     UINT8 j;
@@ -85,6 +82,20 @@ void movegamecharacterboneca(struct Boneca* character, UINT8 x, UINT8 y){
     move_sprite(character->spritids[3], x + spritesize, y + spritesize);
     move_sprite(character->spritids[4], x, y + (spritesize + spritesize));
     move_sprite(character->spritids[5], x + spritesize, y + (spritesize + spritesize));
+}
+
+void movetimer(struct ScorePoint *timer, UINT8 x, UINT8 y){
+    UINT8 i = 0;
+
+    move_sprite(timer->spritids[0], x, y);
+    move_sprite(timer->spritids[1], x + spritesize, y);
+    move_sprite(timer->spritids[2], x + 2*spritesize, y);
+    move_sprite(timer->spritids[3], x + 3*spritesize, y);
+    move_sprite(timer->spritids[4], x + 4*spritesize, y);
+    move_sprite(timer->spritids[5], x + 5*spritesize, y);
+    move_sprite(timer->spritids[6], x + 6*spritesize, y);
+    move_sprite(timer->spritids[7], x + 7*spritesize, y);
+    move_sprite(timer->spritids[8], x + 8*spritesize, y);
 }
 
 void setupatras(){
@@ -171,17 +182,58 @@ void setupbonecafixa(){
         bonecafixa.spritids[w] = z;
         w++;
     }
-    movegamecharacterboneca(&bonecafixa, 10, 130);
+    //movegamecharacterboneca(&bonecafixa, 10, 130);
 } 
+
+void setupbonecafixaback(){
+    INT8 z, w = 0;
+    bonecafixaback.comprimento = 16;
+    bonecafixaback.largura = 24;
+
+    for(z = 30; z < 34; z++) {
+        set_sprite_tile(z,z);
+        bonecafixaback.spritids[w] = z;
+        w++;
+    }
+    bonecafixaback.spritids[4] = 28;
+    bonecafixaback.spritids[5] = 29;
+
+    movegamecharacterboneca(&bonecafixaback, 10, 130);
+} 
+
+
+void setuptimer(){
+    INT8 z, w = 0;
+    
+    for(z = 46; z < 52; z++){
+        set_sprite_tile(z,z);
+        timer.spritids[w] = z;
+        w++;
+    }
+    set_sprite_tile(52,52);
+    timer.spritids[w] = 52;
+    w++;
+    set_sprite_tile(53,53);
+    timer.spritids[w] = 53;
+    w++;
+    set_sprite_tile(54,54);
+    timer.spritids[w] = 54;
+    w++;
+
+    movetimer(&timer, 100, 140);
+    //move
+}
 
 void setups(){
     setupfrente();
     setupatras();
     setupdireita();
-    setupbonecafixa();
     setupbotatras();
     setupbotfrente();
     setupbotdireita();
+    setupbonecafixa();
+    setupbonecafixaback();
+    setuptimer();
 }
 
 void main(){
@@ -189,23 +241,23 @@ void main(){
     INT8 mapy = 112;
     INT8 i;
 
-    set_bkg_data(0, 114, sqgame3_data);
-    set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
+    //set_bkg_data(0, 114, sqgame3_data);
+    //set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
 
     SHOW_BKG;
     DISPLAY_ON;
 
-    waitpad(J_START);
-    fadeout();
+    //waitpad(J_START);
+    //fadeout();
 
     set_bkg_data(0, 34, TileLabel);
     set_bkg_tiles(0, 0, 32, 32, mapbackground);  	
     scroll_bkg(mapx,mapy);
 
-	fadein();
+	//fadein();
 
     set_sprite_data(0, 46, characters);
-    set_sprite_data(46, 17, score);
+    set_sprite_data(46, 18, score);
     setups();
      
     SHOW_SPRITES;
