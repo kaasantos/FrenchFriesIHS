@@ -12,3 +12,9 @@ struct Boneca{
 	UINT8 largura;
 	UINT8 comprimento;
 };
+
+struct scorePoint{
+	UBYTE spriteids[9];
+	UINT16 valor;
+    UBYTE spriteTiles[11];
+};

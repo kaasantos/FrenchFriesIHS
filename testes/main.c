@@ -4,18 +4,20 @@
 #include "characters.c" //Sprites e frames dos personagens
 #include "background.c" //Sprites do mapa
 #include "mapbackground.c" //Geração do mapa com os sprites definidos no background
+#include "score.c"
 
-struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
 struct GameCharacter principaldireita;
+struct GameCharacter principalfrente;
 struct Boneca bonecafixa; 
 struct GameCharacter botfrente;
 struct GameCharacter botatras;
 struct GameCharacter botdireita;
+struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-UINT8 x = 70;
-UINT8 y = 140;
+UINT8 x = 76;
+UINT8 y = 135;
 
 void performantdelay(UINT8 numloops){
     UINT8 j;
@@ -137,12 +139,6 @@ void setups(){
     setupbotdireita();
 }
 
-/*  void move(UINT8 newx, UINT8 newy){
-    UINT16 indexX, indexY, indexGlobal;
-
-    indexX = (newx - 1)
-} */
-
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
@@ -153,6 +149,7 @@ void main(){
     SHOW_BKG;
 
     set_sprite_data(0, 46, characters);
+    set_sprite_data(46, 17, score);
     setups();
     SHOW_SPRITES;
 
@@ -161,7 +158,7 @@ void main(){
     while(1){
 
         if(joypad() & J_LEFT){
-            if(x > 25 ){
+            if(x > 28 ){
                 x -= 1;
                 principaldireita.spritids[1] = 8;
                 principaldireita.spritids[0] = 9;
@@ -179,14 +176,14 @@ void main(){
               
         }
         if(joypad() & J_RIGHT){
-            if(x < 126){
+            if(x < 129){
                 x += 1;
                 principaldireita.spritids[0] = 8;
                 principaldireita.spritids[1] = 9;
                 principaldireita.spritids[2] = 10;
                 principaldireita.spritids[3] = 11;
 
-                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i]);
+                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i], S_PRIORITY);
 
                 movegamecharacter(&principalatras, -10, -10);
                 movegamecharacter(&principalfrente, -10, -10);
@@ -196,7 +193,7 @@ void main(){
             }
         }
         if(joypad() & J_UP){
-            if(y > 26){
+            if(y > 23){
                 y -= 1;
 
                 movegamecharacter(&principalfrente, -10, -10);
@@ -208,7 +205,7 @@ void main(){
             }
         }
         if(joypad() & J_DOWN ){
-            if(y <= 140){
+            if(y < 139){
                 y += 1;
                 
                 movegamecharacter(&principalatras, -10, -10);
