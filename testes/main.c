@@ -6,19 +6,23 @@
 #include "characters.c" //Sprites e frames dos personagens
 #include "background.c" //Sprites do mapa
 #include "mapbackground.c" //Geração do mapa com os sprites definidos no background
+#include "score.c"
 
 struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
 struct GameCharacter principaldireita;
 struct Boneca bonecafixa; 
+struct Boneca bonecafixaback;
 struct GameCharacter botfrente;
 struct GameCharacter botatras;
 struct GameCharacter botdireita;
+struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-UINT8 x = 70;
+UINT8 x = 76;
 UINT8 f;
-UINT8 y = 140;
+UINT8 y = 135;
+
 
 void performantdelay(UINT8 numloops){
     UINT8 j;
@@ -78,6 +82,20 @@ void movegamecharacterboneca(struct Boneca* character, UINT8 x, UINT8 y){
     move_sprite(character->spritids[3], x + spritesize, y + spritesize);
     move_sprite(character->spritids[4], x, y + (spritesize + spritesize));
     move_sprite(character->spritids[5], x + spritesize, y + (spritesize + spritesize));
+}
+
+void movetimer(struct ScorePoint *timer, UINT8 x, UINT8 y){
+    UINT8 i = 0;
+
+    move_sprite(timer->spritids[0], x, y);
+    move_sprite(timer->spritids[1], x + spritesize, y);
+    move_sprite(timer->spritids[2], x + 2*spritesize, y);
+    move_sprite(timer->spritids[3], x + 3*spritesize, y);
+    move_sprite(timer->spritids[4], x + 4*spritesize, y);
+    move_sprite(timer->spritids[5], x + 5*spritesize, y);
+    move_sprite(timer->spritids[6], x + 6*spritesize, y);
+    move_sprite(timer->spritids[7], x + 7*spritesize, y);
+    move_sprite(timer->spritids[8], x + 8*spritesize, y);
 }
 
 void setupatras(){
@@ -164,24 +182,59 @@ void setupbonecafixa(){
         bonecafixa.spritids[w] = z;
         w++;
     }
-    movegamecharacterboneca(&bonecafixa, 10, 130);
+    //movegamecharacterboneca(&bonecafixa, 10, 130);
 } 
+
+void setupbonecafixaback(){
+    INT8 z, w = 0;
+    bonecafixaback.comprimento = 16;
+    bonecafixaback.largura = 24;
+
+    for(z = 30; z < 34; z++) {
+        set_sprite_tile(z,z);
+        bonecafixaback.spritids[w] = z;
+        w++;
+    }
+    bonecafixaback.spritids[4] = 28;
+    bonecafixaback.spritids[5] = 29;
+
+    movegamecharacterboneca(&bonecafixaback, 10, 130);
+}
+
+
+void setuptimer(){
+    INT8 z, w = 0;
+    
+    for(z = 46; z < 52; z++){
+        set_sprite_tile(z,z);
+        timer.spritids[w] = z;
+        w++;
+    }
+    set_sprite_tile(52,52);
+    timer.spritids[w] = 52;
+    w++;
+    set_sprite_tile(53,53);
+    timer.spritids[w] = 53;
+    w++;
+    set_sprite_tile(54,54);
+    timer.spritids[w] = 54;
+    w++;
+
+    movetimer(&timer, 100, 140);
+    //move
+}
 
 void setups(){
     setupfrente();
     setupatras();
     setupdireita();
-    setupbonecafixa();
     setupbotatras();
     setupbotfrente();
     setupbotdireita();
+    setupbonecafixa();
+    setupbonecafixaback();
+    setuptimer();
 }
-
-/*  void move(UINT8 newx, UINT8 newy){
-    UINT16 indexX, indexY, indexGlobal;
-
-    indexX = (newx - 1)
-} */
 
 void main(){
     INT8 mapx = 44;
@@ -205,6 +258,7 @@ void main(){
 	fadein();
 
     set_sprite_data(0, 46, characters);
+    set_sprite_data(46, 18, score);
     setups();
      
     SHOW_SPRITES;
@@ -212,7 +266,7 @@ void main(){
     while(1){
 
         if(joypad() & J_LEFT){
-            if(x > 25 ){
+            if(x > 28 ){
                 x -= 1;
                 principaldireita.spritids[1] = 8;
                 principaldireita.spritids[0] = 9;
@@ -230,14 +284,14 @@ void main(){
               
         }
         if(joypad() & J_RIGHT){
-            if(x < 126){
+            if(x < 129){
                 x += 1;
                 principaldireita.spritids[0] = 8;
                 principaldireita.spritids[1] = 9;
                 principaldireita.spritids[2] = 10;
                 principaldireita.spritids[3] = 11;
 
-                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i]);
+                for(i = 0; i < 4; i++) set_sprite_prop(principaldireita.spritids[i], S_PRIORITY);
 
                 movegamecharacter(&principalatras, -10, -10);
                 movegamecharacter(&principalfrente, -10, -10);
@@ -247,7 +301,7 @@ void main(){
             }
         }
         if(joypad() & J_UP){
-            if(y > 26){
+            if(y > 23){
                 y -= 1;
 
                 movegamecharacter(&principalfrente, -10, -10);
@@ -260,7 +314,7 @@ void main(){
         }
         if(joypad() & J_DOWN ){
 
-            if(y <= 140){
+            if(y <= 139){
                 y += 1;
                 
                 movegamecharacter(&principalatras, -10, -10);
@@ -273,17 +327,17 @@ void main(){
 
         }
         if(joypad() & J_A){
-            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
-            game = 0;
+            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            //game = 0;
         }
         if(joypad() & J_B){
-            game = 2;
+            //game = 2;
         }
         performantdelay(6);  
 
         //tela de derrota quando game == 0( no momento apertando A "S")
-        if(game ==0){
+        /*if(game ==0){
             HIDE_SPRITES;
             while(1){
                 printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Lose!");
@@ -293,9 +347,9 @@ void main(){
                 }
             }
             break;
-        }
+        }*/
         //tela de vitoria quando game == 2( no momento apertando B "A")
-        if(game == 2){
+        /*if(game == 2){
             HIDE_SPRITES;
             while(1){
                 printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Win!");
@@ -305,7 +359,7 @@ void main(){
                 }
             }
             break;
-        } 
+        } */
     }
 
 }
