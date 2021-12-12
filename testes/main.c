@@ -234,6 +234,9 @@ void spritestimer(UINT16 tempinho){
         case 2:
             set_sprite_tile(timer.spritids[8], timer.spriteTiles[2]);
             break;
+        case 3:
+            set_sprite_tile(timer.spritids[8], timer.spriteTiles[3]);
+            break;
     }
 
 }
@@ -253,7 +256,7 @@ void setups(){
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
-    INT8 i;
+    INT8 i, flag = 0;
     INT8 game = 1;
 
     set_bkg_data(0, 114, sqgame3_data);
@@ -347,7 +350,7 @@ void main(){
             //game = 2;
         }
 
-        if(count>=10){ 
+        if(count>=15){ 
             time++;
             //printf("Tempo: %d\n",time);
             count = 0;
@@ -356,12 +359,14 @@ void main(){
 
         spritestimer(time);
 
-        if(time == 5){
+        if(time % 5 == 1 & flag == 0){
             movegamecharacter(&bonecafixa, 10, 130);
             movegamecharacter(&bonecafixaback, 0, 0);
-        }else if(time == 10){
+            flag = 1;
+        }else if(time % 5 == 1 & flag == 1){
             movegamecharacter(&bonecafixa, 0, 0);
             movegamecharacter(&bonecafixaback, 10, 130);
+            flag = 0;
         }
 
         performantdelay(6);  
