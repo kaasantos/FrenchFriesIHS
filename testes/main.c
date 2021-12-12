@@ -33,15 +33,37 @@ void performantdelay(UINT8 numloops){
         wait_vbl_done();
     }     
 }
-
-void somTiro(){
-    NR10_REG = 0x2C;
-    NR11_REG = 0x81;
-    NR12_REG = 0x92;
-    NR13_REG = 0x2A;
-    NR14_REG = 0x84; 
+//Depois colocar no arquivo sons.c para organizar o código
+void somAndar(){
+    NR10_REG = 0x1A;
+    NR11_REG = 0x80;
+    NR12_REG = 0x22;
+    NR13_REG = 0x9C;
+    NR14_REG = 0x86; 
 }
 
+void somVira(){
+    NR30_REG = 0x80;
+    NR31_REG = 0x03;
+    NR32_REG = 0x60;
+    NR33_REG = 0xBF;
+    NR34_REG = 0xC6; 
+}
+void somViraVolta(){
+    NR30_REG = 0x80;
+    NR31_REG = 0x03;
+    NR32_REG = 0x60;
+    NR33_REG = 0x65;
+    NR34_REG = 0xC6; 
+}
+void somSelect(){
+    NR10_REG = 0x18;
+    NR11_REG = 0x88;
+    NR12_REG = 0x44;
+    NR13_REG = 0x73;
+    NR14_REG = 0x86; 
+}
+//depois colocar no arquivo fadedelay.c para organizar o código
 void fadeout(){
 	for(f=0;f<4;f++){
 		switch(f){
@@ -264,11 +286,12 @@ void main(){
     DISPLAY_ON;
 
     waitpad(J_START);
+    somSelect();
     fadeout();
 
     set_bkg_data(0, 34, TileLabel);
     set_bkg_tiles(0, 0, 32, 32, mapbackground);  	
-    //scroll_bkg(mapx,mapy);
+    scroll_bkg(mapx,mapy);
 
 	fadein();
 
@@ -282,6 +305,7 @@ void main(){
     while(1){
         if(joypad() & J_LEFT){
             if(x > 28 ){
+                somAndar();
                 x -= 1;
                 principaldireita.spritids[1] = 8;
                 principaldireita.spritids[0] = 9;
@@ -300,6 +324,7 @@ void main(){
         }
         if(joypad() & J_RIGHT){
             if(x < 129){
+                somAndar();
                 x += 1;
                 principaldireita.spritids[0] = 8;
                 principaldireita.spritids[1] = 9;
@@ -317,6 +342,7 @@ void main(){
         }
         if(joypad() & J_UP){
             if(y > 23){
+                somAndar();
                 y -= 1;
 
                 movegamecharacter(&principalfrente, -10, -10);
@@ -330,6 +356,7 @@ void main(){
         if(joypad() & J_DOWN ){
 
             if(y <= 139){
+                somAndar();
                 y += 1;
                 
                 movegamecharacter(&principalatras, -10, -10);
@@ -342,12 +369,13 @@ void main(){
 
         }
         if(joypad() & J_A){
-            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            somViraVolta();
+            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
             //game = 0;
         }
         if(joypad() & J_B){
-            somTiro();
+            somVira();
         }
         if(time > 60){
             game = 0;
@@ -357,7 +385,7 @@ void main(){
             printf("Tempo: %d\n",time);
             count = 0;
         }
-        count++;
+        //count++;
         performantdelay(6);  
 
         //tela de derrota quando game == 0
