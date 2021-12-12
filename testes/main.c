@@ -1,16 +1,16 @@
 #include <gb/gb.h>
 #include <stdio.h>
-//#include "sqgame3_data.c"
-//#include "sqgame3_map.c"//tela inicio
+#include "sqgame3_data.c"
+#include "sqgame3_map.c"//tela inicio
 #include "GameCharacter.c" //Criação das structs
-#include "characters.c" //Sprites e frames dos personagens
+#include "characters.c" //Sprites e frames dos personagens e score
 #include "background.c" //Sprites do mapa
 #include "mapbackground.c" //Geração do mapa com os sprites definidos no background
 #include "score.c"
 
+struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
 struct GameCharacter principaldireita;
-struct GameCharacter principalfrente;
 struct Boneca bonecafixa; 
 struct Boneca bonecafixaback;
 struct GameCharacter botfrente;
@@ -19,8 +19,8 @@ struct GameCharacter botdireita;
 struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-UINT8 f = 0;
 UINT8 x = 76;
+UINT8 f;
 UINT8 y = 135;
 
 
@@ -85,8 +85,7 @@ void movegamecharacterboneca(struct Boneca* character, UINT8 x, UINT8 y){
 }
 
 void movetimer(struct ScorePoint *timer, UINT8 x, UINT8 y){
-    UINT8 i = 0;
-
+    //UINT8 i = 0;
     move_sprite(timer->spritids[0], x, y);
     move_sprite(timer->spritids[1], x + spritesize, y);
     move_sprite(timer->spritids[2], x + 2*spritesize, y);
@@ -134,7 +133,7 @@ void setupdireita(){
     }
 }
 
-void setupbotfrente(){
+/* void setupbotfrente(){
     INT8 z, w = 0;
     botfrente.comprimento = 16;
     botfrente.largura = 16;
@@ -144,8 +143,7 @@ void setupbotfrente(){
         botfrente.spritids[w] = z;
         w++;
     }
-}
-
+} 
 void setupbotatras(){
     INT8 z, w = 0;
     botatras.comprimento = 16;
@@ -170,14 +168,14 @@ void setupbotdireita(){
         botdireita.spritids[w] = z;
         w++;
     }
-}
+} */
 
 void setupbonecafixa(){
     INT8 z, w = 0;
     bonecafixa.comprimento = 16;
     bonecafixa.largura = 24;
 
-    for(z = 24; z < 30; z++) {
+    for(z = 13; z < 18; z++){
         set_sprite_tile(z,z);
         bonecafixa.spritids[w] = z;
         w++;
@@ -190,37 +188,45 @@ void setupbonecafixaback(){
     bonecafixaback.comprimento = 16;
     bonecafixaback.largura = 24;
 
-    for(z = 30; z < 34; z++) {
+    for(z = 18; z < 22; z++) {
         set_sprite_tile(z,z);
         bonecafixaback.spritids[w] = z;
         w++;
     }
-    bonecafixaback.spritids[4] = 28;
-    bonecafixaback.spritids[5] = 29;
+    bonecafixaback.spritids[4] = 16;
+    bonecafixaback.spritids[5] = 17;
 
     movegamecharacterboneca(&bonecafixaback, 10, 130);
-} 
+}
 
 
 void setuptimer(){
     INT8 z, w = 0;
     
-    for(z = 46; z < 52; z++){
+    for(z = 22; z < 27; z++){
         set_sprite_tile(z,z);
         timer.spritids[w] = z;
         w++;
     }
-    set_sprite_tile(52,52);
-    timer.spritids[w] = 52;
-    w++;
-    set_sprite_tile(53,53);
-    timer.spritids[w] = 53;
-    w++;
-    set_sprite_tile(54,54);
-    timer.spritids[w] = 54;
-    w++;
+    set_sprite_tile(27,27);
+    timer.spritids[5] = 27;
+    set_sprite_tile(28,28);
+    timer.spritids[6] = 28;
+    set_sprite_tile(29,29);
+    timer.spritids[7] = 29;
+    set_sprite_tile(30,30);
+    set_sprite_tile(31,31);
+    timer.spritids[8] = 31;
+    set_sprite_tile(32,32);
+    set_sprite_tile(33,33);
+    set_sprite_tile(34,34);
+    set_sprite_tile(35,35);
+    set_sprite_tile(36,36);
+    set_sprite_tile(37,37);
 
-    movetimer(&timer, 100, 140);
+
+
+    movetimer(&timer, 96, 152);
     //move
 }
 
@@ -228,9 +234,9 @@ void setups(){
     setupfrente();
     setupatras();
     setupdireita();
-    setupbotatras();
-    setupbotfrente();
-    setupbotdireita();
+    //setupbotatras();
+    //setupbotfrente();
+    //setupbotdireita();
     setupbonecafixa();
     setupbonecafixaback();
     setuptimer();
@@ -240,24 +246,24 @@ void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
     INT8 i;
+    INT8 game = 1;
 
-    //set_bkg_data(0, 114, sqgame3_data);
-    //set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
+    set_bkg_data(0, 114, sqgame3_data);
+    set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
 
     SHOW_BKG;
     DISPLAY_ON;
 
-    //waitpad(J_START);
-    //fadeout();
+    waitpad(J_START);
+    fadeout();
 
     set_bkg_data(0, 34, TileLabel);
     set_bkg_tiles(0, 0, 32, 32, mapbackground);  	
     scroll_bkg(mapx,mapy);
 
-	//fadein();
+	fadein();
 
-    set_sprite_data(0, 46, characters);
-    set_sprite_data(46, 18, score);
+    set_sprite_data(0, 42, characters);
     setups();
      
     SHOW_SPRITES;
@@ -312,6 +318,7 @@ void main(){
             }
         }
         if(joypad() & J_DOWN ){
+
             if(y < 139){
                 y += 1;
                 
@@ -327,8 +334,37 @@ void main(){
         if(joypad() & J_A){
             printf("%u %u\n",(UINT16)(x),(UINT16)(y));
             printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            //game = 0;
         }
-       performantdelay(6);      
+        if(joypad() & J_B){
+            //game = 2;
+        }
+        performantdelay(6);  
+
+        //tela de derrota quando game == 0( no momento apertando A "S")
+        /*if(game ==0){
+            HIDE_SPRITES;
+            while(1){
+                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Se Ferrou!");
+                performantdelay(25);
+                if(joypad()){
+                    break;
+                }
+            }
+            break;
+        }*/
+        //tela de vitoria quando game == 2( no momento apertando B "A")
+        /*if(game == 2){
+            HIDE_SPRITES;
+            while(1){
+                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Você venceu, f0f0!");
+                performantdelay(25);
+                if(joypad()){
+                    break;
+                }
+            }
+            break;
+        } */
     }
 
 }
