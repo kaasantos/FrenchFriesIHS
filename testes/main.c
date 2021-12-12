@@ -11,8 +11,8 @@
 struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
 struct GameCharacter principaldireita;
-struct Boneca bonecafixa; 
-struct Boneca bonecafixaback;
+struct GameCharacter bonecafixa; 
+struct GameCharacter bonecafixaback;
 struct GameCharacter botfrente;
 struct GameCharacter botatras;
 struct GameCharacter botdireita;
@@ -22,7 +22,7 @@ UBYTE spritesize = 8;
 UINT8 x = 76;
 UINT8 y = 135;
 UINT8 count = 0;
-UINT16 time = 0;
+UINT16 time = 1;
 
 
 void performantdelay(UINT8 numloops){
@@ -80,15 +80,13 @@ void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
 
 void movetimer(struct ScorePoint *timer, UINT8 x, UINT8 y){
     //UINT8 i = 0;
-    move_sprite(timer->spritids[0], x, y);
-    move_sprite(timer->spritids[1], x + spritesize, y);
-    move_sprite(timer->spritids[2], x + 2*spritesize, y);
-    move_sprite(timer->spritids[3], x + 3*spritesize, y);
-    move_sprite(timer->spritids[4], x + 4*spritesize, y);
-    move_sprite(timer->spritids[5], x + 5*spritesize, y);
-    move_sprite(timer->spritids[6], x + 6*spritesize, y);
-    move_sprite(timer->spritids[7], x + 7*spritesize, y);
-    move_sprite(timer->spritids[8], x + 8*spritesize, y);
+    move_sprite(timer->spritids[0], x + 2*spritesize, y);
+    move_sprite(timer->spritids[1], x + 3*spritesize, y);
+    move_sprite(timer->spritids[2], x + 4*spritesize, y);
+    move_sprite(timer->spritids[3], x + 5*spritesize, y);
+    move_sprite(timer->spritids[4], x + 6*spritesize, y);
+    move_sprite(timer->spritids[5], x + 7*spritesize, y);
+    move_sprite(timer->spritids[6], x + 8*spritesize, y);
 }
 
 void setupatras(){
@@ -194,51 +192,32 @@ void setupbonecafixaback(){
 void setuptimer(){
     INT8 z, w = 0, aux = 27;
     
-    for(z = 22; z < 28; z++){
+    for(z = 22; z < 27; z++){
         set_sprite_tile(z,z);
         timer.spritids[w] = z;
         w++;
     }
+    set_sprite_tile(27,27);
     set_sprite_tile(28,28);
     set_sprite_tile(29,29);
     set_sprite_tile(30,30);    
-    timer.spritids[6] = 30;
     set_sprite_tile(31,31);
-    timer.spritids[7] = 31;
     set_sprite_tile(32,32);
     set_sprite_tile(33,33);
     set_sprite_tile(34,34);
     set_sprite_tile(35,35);
     set_sprite_tile(36,36);
+    timer.spritids[5] = 36;
     set_sprite_tile(37,37);
-    set_sprite_tile(38,38);
-    timer.spritids[8] = 38;
+    timer.spritids[6] = 37;
 
-    for(z = 0; z < 12; z++){
+    for(z = 0; z < 11; z++){
         timer.spriteTiles[z] = aux;
         aux++;
     }
 
     movetimer(&timer, 96, 152);
     //move
-}
-
-void spritestimer(UINT16 tempinho){
-    if(tempinho > 30) set_sprite_tile(timer.spritids[6],timer.spriteTiles[9]); 
-
-
-    switch(tempinho){
-        case 1:
-            set_sprite_tile(timer.spritids[8], timer.spriteTiles[1]);
-            break;
-        case 2:
-            set_sprite_tile(timer.spritids[8], timer.spriteTiles[2]);
-            break;
-        case 3:
-            set_sprite_tile(timer.spritids[8], timer.spriteTiles[3]);
-            break;
-    }
-
 }
 
 void setups(){
@@ -256,7 +235,7 @@ void setups(){
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
-    INT8 i, flag = 0;
+    INT8 i, flag = 0, flag2 = 2;
     INT8 game = 1;
 
     set_bkg_data(0, 114, sqgame3_data);
@@ -350,14 +329,32 @@ void main(){
             //game = 2;
         }
 
-        if(count>=15){ 
+        if(count>=10){ 
+            if(time == 10){
+                time = 0;
+                set_sprite_tile(timer.spritids[5], timer.spriteTiles[flag2]);
+                flag2++;
+            }
             time++;
             //printf("Tempo: %d\n",time);
             count = 0;
         }
         count++;
 
-        spritestimer(time);
+        if(flag2 == 12){
+            HIDE_SPRITES;
+            while(1){
+                printf("\n\n\n\n\n\n\n\n\n\n\n        Se Ferrou, b0b1nh0!");
+                performantdelay(25);
+                if(joypad()){
+
+                    break;
+                }
+            }
+            break;
+        }
+
+        set_sprite_tile(timer.spritids[6], timer.spriteTiles[time]);
 
         if(time % 5 == 1 & flag == 0){
             movegamecharacter(&bonecafixa, 10, 130);
@@ -372,17 +369,6 @@ void main(){
         performantdelay(6);  
 
         //tela de derrota quando game == 0( no momento apertando A "S")
-        /*if(game ==0){
-            HIDE_SPRITES;
-            while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Se Ferrou!");
-                performantdelay(25);
-                if(joypad()){
-                    break;
-                }
-            }
-            break;
-        }*/
         //tela de vitoria quando game == 2( no momento apertando B "A")
         /*if(game == 2){
             HIDE_SPRITES;
