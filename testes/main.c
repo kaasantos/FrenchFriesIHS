@@ -18,10 +18,13 @@ struct GameCharacter botatras;
 struct GameCharacter botdireita;
 struct ScorePoint timer;
 
+
 UBYTE spritesize = 8;
 UINT8 x = 76;
 UINT8 f;
 UINT8 y = 135;
+UINT8 count = 0;
+UINT16 time = 0;
 
 
 void performantdelay(UINT8 numloops){
@@ -29,6 +32,14 @@ void performantdelay(UINT8 numloops){
     for(j = 0; j < numloops; j++){
         wait_vbl_done();
     }     
+}
+
+void somTiro(){
+    NR10_REG = 0x2C;
+    NR11_REG = 0x81;
+    NR12_REG = 0x92;
+    NR13_REG = 0x2A;
+    NR14_REG = 0x84; 
 }
 
 void fadeout(){
@@ -241,6 +252,10 @@ void main(){
     INT8 mapy = 112;
     INT8 i;
     INT8 game = 1;
+    
+    NR52_REG = 0x80; // liga o som
+    NR50_REG = 0x77; // volume máximo
+    NR51_REG = 0xFF; // canais que estão sendo usados(todos)
 
     set_bkg_data(0, 114, sqgame3_data);
     set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
@@ -253,18 +268,18 @@ void main(){
 
     set_bkg_data(0, 34, TileLabel);
     set_bkg_tiles(0, 0, 32, 32, mapbackground);  	
-    scroll_bkg(mapx,mapy);
+    //scroll_bkg(mapx,mapy);
 
 	fadein();
 
     set_sprite_data(0, 46, characters);
     set_sprite_data(46, 18, score);
     setups();
+    
      
     SHOW_SPRITES;
 
     while(1){
-
         if(joypad() & J_LEFT){
             if(x > 28 ){
                 x -= 1;
@@ -332,12 +347,21 @@ void main(){
             //game = 0;
         }
         if(joypad() & J_B){
-            //game = 2;
+            somTiro();
         }
+        if(time > 60){
+            game = 0;
+        }
+        if(count>=10){ 
+            time++;
+            printf("Tempo: %d\n",time);
+            count = 0;
+        }
+        count++;
         performantdelay(6);  
 
-        //tela de derrota quando game == 0( no momento apertando A "S")
-        /*if(game ==0){
+        //tela de derrota quando game == 0
+        if(game ==0){
             HIDE_SPRITES;
             while(1){
                 printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Lose!");
@@ -347,7 +371,7 @@ void main(){
                 }
             }
             break;
-        }*/
+        }
         //tela de vitoria quando game == 2( no momento apertando B "A")
         /*if(game == 2){
             HIDE_SPRITES;
