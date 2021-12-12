@@ -7,7 +7,12 @@ void somAndar(){
     NR13_REG = 0x9C;
     NR14_REG = 0x86; 
 }
-
+void somTiro(){
+    NR41_REG = 0x3A;
+    NR42_REG = 0xA1;
+    NR43_REG = 0x88;
+    NR44_REG = 0xC0; 
+}
 void somVira(){
     NR30_REG = 0x80;
     NR31_REG = 0x03;

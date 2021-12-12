@@ -7,6 +7,8 @@
 #include "background.c" //Sprites do mapa
 #include "mapbackground.c" //Geração do mapa com os sprites definidos no background
 #include "score.c"
+#include "sons.c"
+#include "fadedelay.c"
 
 struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
@@ -21,85 +23,10 @@ struct ScorePoint timer;
 
 UBYTE spritesize = 8;
 UINT8 x = 76;
-UINT8 f;
 UINT8 y = 135;
 UINT8 count = 0;
 UINT16 time = 0;
 
-
-void performantdelay(UINT8 numloops){
-    UINT8 j;
-    for(j = 0; j < numloops; j++){
-        wait_vbl_done();
-    }     
-}
-//Depois colocar no arquivo sons.c para organizar o código
-void somAndar(){
-    NR10_REG = 0x1A;
-    NR11_REG = 0x80;
-    NR12_REG = 0x22;
-    NR13_REG = 0x9C;
-    NR14_REG = 0x86; 
-}
-
-void somVira(){
-    NR30_REG = 0x80;
-    NR31_REG = 0x03;
-    NR32_REG = 0x60;
-    NR33_REG = 0xBF;
-    NR34_REG = 0xC6; 
-}
-void somViraVolta(){
-    NR30_REG = 0x80;
-    NR31_REG = 0x03;
-    NR32_REG = 0x60;
-    NR33_REG = 0x65;
-    NR34_REG = 0xC6; 
-}
-void somSelect(){
-    NR10_REG = 0x18;
-    NR11_REG = 0x88;
-    NR12_REG = 0x44;
-    NR13_REG = 0x73;
-    NR14_REG = 0x86; 
-}
-//depois colocar no arquivo fadedelay.c para organizar o código
-void fadeout(){
-	for(f=0;f<4;f++){
-		switch(f){
-			case 0:
-				BGP_REG = 0xE4;
-				break;
-			case 1:
-				BGP_REG = 0xF9;
-				break;
-			case 2:
-				BGP_REG = 0xFE;
-				break;
-			case 3:
-				BGP_REG = 0xFF;	
-				break;						
-		}
-		performantdelay(10);
-	}
-}
-
-void fadein(){
-	for(f=0;f<3;f++){
-		switch(f){
-			case 0:
-				BGP_REG = 0xFE;
-				break;
-			case 1:
-				BGP_REG = 0xF9;
-				break;
-			case 2:
-				BGP_REG = 0xE4;
-				break;					
-		}
-		performantdelay(10);
-	}
-}
 
 void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
     move_sprite(character->spritids[0], x, y);
@@ -369,15 +296,18 @@ void main(){
 
         }
         if(joypad() & J_A){
-            somViraVolta();
+            somTiro();
+            //somViraVolta();
             //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
             //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
             //game = 0;
         }
         if(joypad() & J_B){
+            
             somVira();
         }
         if(time > 60){
+            somTiro();
             game = 0;
         }
         if(count>=10){ 
