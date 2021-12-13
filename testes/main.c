@@ -21,10 +21,9 @@ struct GameCharacter botdireita;
 struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-UINT8 x = 76;
-UINT8 y = 135;
-UINT8 count = 0;
+UINT8 x = 76, y = 135, mapx = 44, mapy = 112, count = 0;
 UINT16 time = 1;
+
 
 
 void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
@@ -188,11 +187,27 @@ void setups(){
     setuptimer();
 }
 
+void lose(){
+    somDerrota();
+    HIDE_SPRITES;
+    performantdelay(20);
+    scroll_bkg(-mapx, -40-mapy);
+    printf("      S#F@D3U");
+    performantdelay(100);
+    somTiro();
+}
+
+void victory(){
+    somVitoria();
+    HIDE_SPRITES; 
+    performantdelay(5);
+    scroll_bkg(-mapx, -40-mapy);
+    printf("    Voce venceu.\n    Why so easy??");   
+}
+
 void main(){
-    INT8 mapx = 44;
-    INT8 mapy = 112;
-    INT8 i, flag = 0, flag2 = 2;
-    INT8 game = 1;
+    INT8 i, flag = 0, derrota = 2;
+    UINT16 tras = 4, amimir = 4, frente = 3, acordar = 3, virada = 0;
 
     NR52_REG = 0x80; // liga o som
     NR50_REG = 0x77; // volume máximo
@@ -219,8 +234,7 @@ void main(){
      
     SHOW_SPRITES;
 
-    while(1){
-
+    while(derrota != 12 && y > 30){
         if(joypad() & J_LEFT){
             if(x > 28 ){
                 somAndar();
@@ -236,9 +250,13 @@ void main(){
                 movegamecharacter(&principalfrente, -10, -10);
                 movegamecharacter(&principaldireita, x, y);
                 mapx -= 1;
-                scroll_bkg(-1, 0);                  
-            }
-              
+                scroll_bkg(-1, 0); 
+                if(virada == 1){
+                    movegamecharacter(&principaldireita, -10, -10);
+                    lose();
+                    break;
+                }               
+            }       
         }
         if(joypad() & J_RIGHT){
             if(x < 129){
@@ -256,6 +274,12 @@ void main(){
                 movegamecharacter(&principaldireita, x, y);
                 mapx += 1;
                 scroll_bkg(1, 0);
+
+                if(virada == 1){
+                    movegamecharacter(&principaldireita, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_UP){
@@ -269,10 +293,15 @@ void main(){
 
                 mapy -= 1;
                 scroll_bkg(0, -1); 
+
+                if(virada == 1){
+                    movegamecharacter(&principalatras, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_DOWN ){
-
             if(y < 139){
                 somAndar();
                 y += 1;
@@ -283,12 +312,18 @@ void main(){
 
                 mapy += 1;
                 scroll_bkg(0, 1);
+
+                if(virada == 1){
+                    movegamecharacter(&principalfrente, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_A){
-            somViraVolta();
-            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            //somViraVolta();
+            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
             //game = 0;
         }
         if(joypad() & J_B){
@@ -297,55 +332,41 @@ void main(){
         }
 
         if(count>=10){ 
-            if(time == 10){
-                time = 0;
-                set_sprite_tile(timer.spritids[5], timer.spriteTiles[flag2]);
-                flag2++;
+            if(flag == 10){
+                flag = 0;
+                set_sprite_tile(timer.spritids[5], timer.spriteTiles[derrota]);
+                derrota++;
             }
             time++;
+            flag++;
             //printf("Tempo: %d\n",time);
             count = 0;
         }
         count++;
 
-        if(flag2 == 12){
-            HIDE_SPRITES;
-            while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n        Se Ferrou, b0b1nh0!");
-                performantdelay(25);
-                if(joypad()){
-                    break;
-                }
-            }
-            break;
-        }
+        set_sprite_tile(timer.spritids[6], timer.spriteTiles[flag]);
 
-        set_sprite_tile(timer.spritids[6], timer.spriteTiles[time]);
+        if(y < 100 && y >= 80) amimir = 3;
+        if(y < 80 && y <= 60) amimir = 2;
+        if(y < 60) amimir = 1;
 
-        if(time % 5 == 1 & flag == 0){
+        if(time == tras && count == 1){
+            movegamecharacter(&bonecafixaback, 10, 130);
+            movegamecharacter(&bonecafixa, 0, 0);
+            somViraVolta(); 
+            virada = 0;
+            frente = tras + amimir;
+        }else if(time == frente && count == 1){
             movegamecharacter(&bonecafixa, 10, 130);
             movegamecharacter(&bonecafixaback, 0, 0);
-            flag = 1;
-        }else if(time % 5 == 1 & flag == 1){
-            movegamecharacter(&bonecafixa, 0, 0);
-            movegamecharacter(&bonecafixaback, 10, 130);
-            flag = 0;
+            somVira(); 
+            virada = 1;
+            tras = frente + acordar;
         }
 
-        performantdelay(6);  
-
-        //tela de vitoria quando game == 2( no momento apertando B "A")
-        /*if(game == 2){
-            HIDE_SPRITES;
-            while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Você venceu, f0f0!");
-                performantdelay(25);
-                if(joypad()){
-                    break;
-                }
-            }
-            break;
-        } */
+        performantdelay(6);      
     }
 
+    if(derrota == 12) lose();
+    if(y <= 30) victory();
 }

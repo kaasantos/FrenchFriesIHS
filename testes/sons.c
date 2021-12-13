@@ -1,5 +1,19 @@
 #include<gb/gb.h>
 
+void somVitoria(){
+    NR10_REG = 0x67;
+    NR11_REG = 0xCC;
+    NR12_REG = 0x28;
+    NR13_REG = 0x75;
+    NR14_REG = 0x86;  
+}
+void somDerrota(){
+    NR10_REG = 0x7F;
+    NR11_REG = 0xD4;
+    NR12_REG = 0x18;
+    NR13_REG = 0x2F;
+    NR14_REG = 0x86;  
+}
 void somAndar(){
     NR10_REG = 0x1A;
     NR11_REG = 0x80;
@@ -8,10 +22,11 @@ void somAndar(){
     NR14_REG = 0x86; 
 }
 void somTiro(){
-    NR41_REG = 0x3A;
-    NR42_REG = 0xA1;
-    NR43_REG = 0x88;
-    NR44_REG = 0xC0; 
+    NR10_REG = 0x3D;
+    NR11_REG = 0x4A;
+    NR12_REG = 0x24;
+    NR13_REG = 0x5A;
+    NR14_REG = 0xC6; 
 }
 void somVira(){
     NR30_REG = 0x80;
