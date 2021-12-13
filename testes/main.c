@@ -21,10 +21,9 @@ struct GameCharacter botdireita;
 struct ScorePoint timer;
 
 UBYTE spritesize = 8;
-UINT8 x = 76;
-UINT8 y = 135;
-UINT8 count = 0;
+UINT8 x = 76, y = 135, mapx = 44, mapy = 112, count = 0;
 UINT16 time = 1;
+
 
 
 void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
@@ -190,12 +189,19 @@ void setups(){
 
 void lose(){
     HIDE_SPRITES;
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n            S#F@D3U"); 
+    performantdelay(5);
+    scroll_bkg(-mapx, -40-mapy);
+    printf("      S#F@D3U");
+}
+
+void victory(){
+    HIDE_SPRITES; 
+    performantdelay(5);
+    scroll_bkg(-mapx, -40-mapy);
+    printf("    Voce venceu.\n    Why so easy??");   
 }
 
 void main(){
-    INT8 mapx = 44;
-    INT8 mapy = 112;
     INT8 i, flag = 0, derrota = 2;
     UINT16 tras = 4, amimir = 4, frente = 3, acordar = 3, virada = 0;
 
@@ -357,24 +363,6 @@ void main(){
         performantdelay(6);      
     }
 
-<<<<<<< HEAD
     if(derrota == 12) lose();
-    if(y <= 30){
-        HIDE_SPRITES; 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu. Why so easy?");        
-    } 
-=======
-    if(derrota == 12){
-        HIDE_SPRITES;
-        performantdelay(5);
-        scroll_bkg(-mapx, -40-mapy);
-        printf("      S#F@D3U");
-    }
-    if(y <= 30){
-        HIDE_SPRITES; 
-        performantdelay(5);
-        scroll_bkg(-mapx, -40-mapy);
-        printf(" Voce venceu, f0f0");        
-    }
->>>>>>> e4fcb3a2e523e00950e2ddec642412931f95c59e
+    if(y <= 30) victory();
 }
