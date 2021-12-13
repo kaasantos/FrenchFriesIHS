@@ -192,7 +192,7 @@ void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
     INT8 i, flag = 0, derrota = 2;
-    INT8 game = 1;
+    UINT16 tras = 4, amimir = 4, frente = 3, acordar = 3;
 
     NR52_REG = 0x80; // liga o som
     NR50_REG = 0x77; // volume máximo
@@ -219,7 +219,7 @@ void main(){
      
     SHOW_SPRITES;
 
-    while(1){
+    while(derrota != 12 && y > 30){
 
         if(joypad() & J_LEFT){
             if(x > 28 ){
@@ -286,9 +286,9 @@ void main(){
             }
         }
         if(joypad() & J_A){
-            somViraVolta();
-            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            //somViraVolta();
+            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
             //game = 0;
         }
         if(joypad() & J_B){
@@ -297,55 +297,45 @@ void main(){
         }
 
         if(count>=10){ 
-            if(time == 10){
-                time = 0;
-                set_sprite_tile(timer.spritids[5], timer.spriteTiles[flag2]);
+            if(flag == 10){
+                flag = 0;
+                set_sprite_tile(timer.spritids[5], timer.spriteTiles[derrota]);
                 derrota++;
             }
             time++;
+            flag++;
             //printf("Tempo: %d\n",time);
             count = 0;
         }
         count++;
 
-        if(derrota == 12){
-            HIDE_SPRITES;
-            while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n       S#F@D3U");
-                performantdelay(25);
-                if(joypad()){
-                    break;
-                }
-            }
-            break;
-        }
+        set_sprite_tile(timer.spritids[6], timer.spriteTiles[flag]);
 
-        set_sprite_tile(timer.spritids[6], timer.spriteTiles[time]);
+        if(y < 100 && y >= 80) amimir = 3;
+        if(y < 80 && y <= 60) amimir = 2;
+        if(y < 60) amimir = 1;
 
-        if(time % 5 == 1 & flag == 0){
+        if(time == frente && count == 1){
             movegamecharacter(&bonecafixa, 10, 130);
             movegamecharacter(&bonecafixaback, 0, 0);
-            flag = 1;
-        }else if(time % 5 == 1 & flag == 1){
-            movegamecharacter(&bonecafixa, 0, 0);
+            tras = frente + acordar;
+            somVira(); 
+        }else if(time == tras && count == 1){
             movegamecharacter(&bonecafixaback, 10, 130);
-            flag = 0;
+            movegamecharacter(&bonecafixa, 0, 0);
+            frente = tras + amimir;
+            somViraVolta();
         }
 
-        performantdelay(6);  
-
-        //tela de vitoria quando game == 2( no momento apertando B "A")
-        /*if(game == 2){
-            HIDE_SPRITES;
-            while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Você venceu, f0f0!");
-                performantdelay(25);
-                if(joypad()){
-                    break;
-                }
-            }
-            break;
-        } */
+        performantdelay(6);      
     }
 
+    if(derrota == 12){
+        HIDE_SPRITES;
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n            S#F@D3U");
+    }
+    if(y <= 30){
+        HIDE_SPRITES; 
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu, f0f0");        
+    }
 }
