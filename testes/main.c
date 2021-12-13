@@ -188,13 +188,17 @@ void setups(){
 }
 
 void lose(){
+    somDerrota();
     HIDE_SPRITES;
-    performantdelay(5);
+    performantdelay(20);
     scroll_bkg(-mapx, -40-mapy);
     printf("      S#F@D3U");
+    performantdelay(100);
+    somTiro();
 }
 
 void victory(){
+    somVitoria();
     HIDE_SPRITES; 
     performantdelay(5);
     scroll_bkg(-mapx, -40-mapy);
