@@ -357,9 +357,24 @@ void main(){
         performantdelay(6);      
     }
 
+<<<<<<< HEAD
     if(derrota == 12) lose();
     if(y <= 30){
         HIDE_SPRITES; 
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu. Why so easy?");        
     } 
+=======
+    if(derrota == 12){
+        HIDE_SPRITES;
+        performantdelay(5);
+        scroll_bkg(-mapx, -40-mapy);
+        printf("      S#F@D3U");
+    }
+    if(y <= 30){
+        HIDE_SPRITES; 
+        performantdelay(5);
+        scroll_bkg(-mapx, -40-mapy);
+        printf(" Voce venceu, f0f0");        
+    }
+>>>>>>> e4fcb3a2e523e00950e2ddec642412931f95c59e
 }
