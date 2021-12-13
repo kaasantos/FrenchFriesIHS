@@ -188,11 +188,16 @@ void setups(){
     setuptimer();
 }
 
+void lose(){
+    HIDE_SPRITES;
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n            S#F@D3U"); 
+}
+
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
     INT8 i, flag = 0, derrota = 2;
-    UINT16 tras = 4, amimir = 4, frente = 3, acordar = 3;
+    UINT16 tras = 4, amimir = 4, frente = 3, acordar = 3, virada = 0;
 
     NR52_REG = 0x80; // liga o som
     NR50_REG = 0x77; // volume máximo
@@ -220,7 +225,6 @@ void main(){
     SHOW_SPRITES;
 
     while(derrota != 12 && y > 30){
-
         if(joypad() & J_LEFT){
             if(x > 28 ){
                 somAndar();
@@ -236,9 +240,13 @@ void main(){
                 movegamecharacter(&principalfrente, -10, -10);
                 movegamecharacter(&principaldireita, x, y);
                 mapx -= 1;
-                scroll_bkg(-1, 0);                  
-            }
-              
+                scroll_bkg(-1, 0); 
+                if(virada == 1){
+                    movegamecharacter(&principaldireita, -10, -10);
+                    lose();
+                    break;
+                }               
+            }       
         }
         if(joypad() & J_RIGHT){
             if(x < 129){
@@ -256,6 +264,12 @@ void main(){
                 movegamecharacter(&principaldireita, x, y);
                 mapx += 1;
                 scroll_bkg(1, 0);
+
+                if(virada == 1){
+                    movegamecharacter(&principaldireita, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_UP){
@@ -269,10 +283,15 @@ void main(){
 
                 mapy -= 1;
                 scroll_bkg(0, -1); 
+
+                if(virada == 1){
+                    movegamecharacter(&principalatras, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_DOWN ){
-
             if(y < 139){
                 somAndar();
                 y += 1;
@@ -283,6 +302,12 @@ void main(){
 
                 mapy += 1;
                 scroll_bkg(0, 1);
+
+                if(virada == 1){
+                    movegamecharacter(&principalfrente, -10, -10);
+                    lose();
+                    break;
+                } 
             }
         }
         if(joypad() & J_A){
@@ -315,27 +340,26 @@ void main(){
         if(y < 80 && y <= 60) amimir = 2;
         if(y < 60) amimir = 1;
 
-        if(time == frente && count == 1){
-            movegamecharacter(&bonecafixa, 10, 130);
-            movegamecharacter(&bonecafixaback, 0, 0);
-            tras = frente + acordar;
-            somVira(); 
-        }else if(time == tras && count == 1){
+        if(time == tras && count == 1){
             movegamecharacter(&bonecafixaback, 10, 130);
             movegamecharacter(&bonecafixa, 0, 0);
+            somViraVolta(); 
+            virada = 0;
             frente = tras + amimir;
-            somViraVolta();
+        }else if(time == frente && count == 1){
+            movegamecharacter(&bonecafixa, 10, 130);
+            movegamecharacter(&bonecafixaback, 0, 0);
+            somVira(); 
+            virada = 1;
+            tras = frente + acordar;
         }
 
         performantdelay(6);      
     }
 
-    if(derrota == 12){
-        HIDE_SPRITES;
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n            S#F@D3U");
-    }
+    if(derrota == 12) lose();
     if(y <= 30){
         HIDE_SPRITES; 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu, f0f0");        
-    }
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu. Why so easy?");        
+    } 
 }
