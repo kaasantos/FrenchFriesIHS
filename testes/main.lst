@@ -1,9 +1,9 @@
                               1 ;--------------------------------------------------------
                               2 ; File Created by SDCC : FreeWare ANSI-C Compiler
-                              3 ; Version 2.2.1 Mon Dec 13 10:45:11 2021
+                              3 ; Version 2.2.1 Mon Dec 13 14:20:50 2021
                               4 
                               5 ;--------------------------------------------------------
-                              6 	.module lcc144600
+                              6 	.module lcc26680
                               7 	
                               8 ;--------------------------------------------------------
                               9 ; Public variables in this module
@@ -205,7 +205,7 @@
                             205 	.area _GSINIT
                             206 	.area _GSFINAL
                             207 	.area _GSINIT
-                            208 ;	main.c 342
+                            208 ;	main.c 346
                             209 ; genAssign (pointer)
    0000 11 00 00            210 	ld	de,#_characters + 0
    0003 3E 0F               211 	ld	a,#0x0F
@@ -3948,7 +3948,7 @@
                            3948 ; genAssign (pointer)
    0E9D 3E 00              3949 	ld	a,#0x00
    0E9F 12                 3950 	ld	(de),a
-                           3951 ;	main.c 342
+                           3951 ;	main.c 346
                            3952 ; genAssign (pointer)
    0EA0 11 70 02           3953 	ld	de,#_TileLabel + 0
    0EA3 3E 55              3954 	ld	a,#0x55
@@ -7211,7 +7211,7 @@
                            7211 ; genAssign (pointer)
    1B5D 3E FF              7212 	ld	a,#0xFF
    1B5F 12                 7213 	ld	(de),a
-                           7214 ;	main.c 342
+                           7214 ;	main.c 346
                            7215 ; genAssign (pointer)
    1B60 11 90 04           7216 	ld	de,#_mapbackground + 0
    1B63 3E 00              7217 	ld	a,#0x00
@@ -13354,7 +13354,7 @@
                           13354 ; genAssign (pointer)
    335D 3E 00             13355 	ld	a,#0x00
    335F 12                13356 	ld	(de),a
-                          13357 ;	main.c 342
+                          13357 ;	main.c 346
                           13358 ; genAssign (pointer)
    3360 11 90 08          13359 	ld	de,#_score + 0
    3363 3E FF             13360 	ld	a,#0xFF
@@ -15081,27 +15081,27 @@
                           15081 ; genAssign (pointer)
    3A1D 3E FF             15082 	ld	a,#0xFF
    3A1F 12                15083 	ld	(de),a
-                          15084 ;	main.c 342
+                          15084 ;	main.c 346
                           15085 ; genAssign
                           15086 ; AOP_HL for _spritesize
    3A20 21 F5 09          15087 	ld	hl,#_spritesize + 0
    3A23 36 08             15088 	ld	(hl),#0x08
-                          15089 ;	main.c 342
+                          15089 ;	main.c 346
                           15090 ; genAssign
                           15091 ; AOP_HL for _x
    3A25 21 F6 09          15092 	ld	hl,#_x + 0
    3A28 36 4C             15093 	ld	(hl),#0x4C
-                          15094 ;	main.c 342
+                          15094 ;	main.c 346
                           15095 ; genAssign
                           15096 ; AOP_HL for _y
    3A2A 21 F7 09          15097 	ld	hl,#_y + 0
    3A2D 36 87             15098 	ld	(hl),#0x87
-                          15099 ;	main.c 342
+                          15099 ;	main.c 346
                           15100 ; genAssign
                           15101 ; AOP_HL for _count
    3A2F 21 F8 09          15102 	ld	hl,#_count + 0
    3A32 36 00             15103 	ld	(hl),#0x00
-                          15104 ;	main.c 342
+                          15104 ;	main.c 346
                           15105 ; genAssign
                           15106 ; AOP_HL for _time
    3A34 21 F9 09          15107 	ld	hl,#_time + 0
@@ -19975,7 +19975,7 @@
                           19975 ; genIpush
    1159 C5                19976 	push	bc
                           19977 ; genIpush
-   115A 21 34 13          19978 	ld	hl,#__str_0 + 0
+   115A 21 74 13          19978 	ld	hl,#__str_0 + 0
    115D E5                19979 	push	hl
                           19980 ; genCall
    115E CD 00 00          19981 	call	_printf
@@ -20004,7 +20004,7 @@
                           20004 ; genIpush
    1176 C5                20005 	push	bc
                           20006 ; genIpush
-   1177 21 3B 13          20007 	ld	hl,#__str_1 + 0
+   1177 21 7B 13          20007 	ld	hl,#__str_1 + 0
    117A E5                20008 	push	hl
                           20009 ; genCall
    117B CD 00 00          20010 	call	_printf
@@ -20398,7 +20398,7 @@
    1301 F8 03             20398 	lda	hl,3(sp)
    1303 B6                20399 	or	a,(hl)
    1304 B7                20400 	or	a,a
-   1305 CA 17 13          20401 	jp	z,00145$
+   1305 CA 37 13          20401 	jp	z,00145$
                           20402 ;	main.c 334
                           20403 ; genAnd
                           20404 ; AOP_SFR for _LCDC_REG
@@ -20407,98 +20407,126 @@
    130C E0 00             20407 	ldh	(_LCDC_REG+0),a
                           20408 ;	main.c 335
                           20409 ; genIpush
-   130E 21 42 13          20410 	ld	hl,#__str_2 + 0
-   1311 E5                20411 	push	hl
-                          20412 ; genCall
-   1312 CD 00 00          20413 	call	_printf
-   1315 E8 02             20414 	lda	sp,2(sp)
-                          20415 ; genLabel
-   1317                   20416 00145$:
-                          20417 ;	main.c 337
-                          20418 ; genCmpGt
-                          20419 ; AOP_HL for _y
-   1317 AF                20420 	xor	a,a
-   1318 3E 1E             20421 	ld	a,#0x1E
-   131A 21 F7 09          20422 	ld	hl,#_y + 0
-   131D 9E                20423 	sbc	a,(hl) ; 2
-   131E DA 30 13          20424 	jp	c,00156$
-                          20425 ;	main.c 338
-                          20426 ; genAnd
-                          20427 ; AOP_SFR for _LCDC_REG
-   1321 F0 00             20428 	ldh	a,(_LCDC_REG+0) ; x
-   1323 E6 FD             20429 	and	a,#0xFD
-   1325 E0 00             20430 	ldh	(_LCDC_REG+0),a
-                          20431 ;	main.c 339
-                          20432 ; genIpush
-   1327 21 63 13          20433 	ld	hl,#__str_3 + 0
-   132A E5                20434 	push	hl
-                          20435 ; genCall
-   132B CD 00 00          20436 	call	_printf
-   132E E8 02             20437 	lda	sp,2(sp)
-                          20438 ; genLabel
-   1330                   20439 00156$:
-                          20440 ; genEndFunction
-   1330 E8 1B             20441 	lda	sp,27(sp)
-   1332 C1                20442 	pop	bc
-   1333 C9                20443 	ret
-   1334                   20444 ___main_end:
-   1334                   20445 __str_0:
-   1334 25 75 20 25 75    20446 	.ascii "%u %u"
-   1339 0A                20447 	.db 0x0A
-   133A 00                20448 	.db 0x00
-   133B                   20449 __str_1:
-   133B 25 75 20 25 75    20450 	.ascii "%u %u"
-   1340 0A                20451 	.db 0x0A
-   1341 00                20452 	.db 0x00
-   1342                   20453 __str_2:
-   1342 0A                20454 	.db 0x0A
-   1343 0A                20455 	.db 0x0A
-   1344 0A                20456 	.db 0x0A
-   1345 0A                20457 	.db 0x0A
-   1346 0A                20458 	.db 0x0A
-   1347 0A                20459 	.db 0x0A
-   1348 0A                20460 	.db 0x0A
-   1349 0A                20461 	.db 0x0A
-   134A 0A                20462 	.db 0x0A
-   134B 0A                20463 	.db 0x0A
-   134C 0A                20464 	.db 0x0A
-   134D 0A                20465 	.db 0x0A
-   134E 0A                20466 	.db 0x0A
-   134F 20 20 20 20 20 20 20467 	.ascii "            S#F@D3U"
-        20 20 20 20 20 20
+   130E 3E 05             20410 	ld	a,#0x05
+   1310 F5                20411 	push	af
+   1311 33                20412 	inc	sp
+                          20413 ; genCall
+   1312 CD BD 08          20414 	call	_performantdelay
+   1315 E8 01             20415 	lda	sp,1(sp)
+                          20416 ;	main.c 336
+                          20417 ; genMinus
+                          20418 ; AOP_STK for _main_mapy_1_1
+   1317 3E D8             20419 	ld	a,#0xD8
+   1319 F8 19             20420 	lda	hl,25(sp)
+   131B 96                20421 	sub	a,(hl)
+   131C 4F                20422 	ld	c,a
+                          20423 ; genUminus
+                          20424 ; AOP_STK for _main_mapx_1_1
+   131D AF                20425 	xor	a,a
+   131E 23                20426 	inc	hl
+   131F 3E 00             20427 	ld	a,#0x00
+   1321 9E                20428 	sbc	a,(hl)
+   1322 47                20429 	ld	b,a
+                          20430 ; genIpush
+   1323 79                20431 	ld	a,c
+   1324 F5                20432 	push	af
+   1325 33                20433 	inc	sp
+                          20434 ; genIpush
+   1326 78                20435 	ld	a,b
+   1327 F5                20436 	push	af
+   1328 33                20437 	inc	sp
+                          20438 ; genCall
+   1329 CD 00 00          20439 	call	_scroll_bkg
+   132C E8 02             20440 	lda	sp,2(sp)
+                          20441 ;	main.c 337
+                          20442 ; genIpush
+   132E 21 82 13          20443 	ld	hl,#__str_2 + 0
+   1331 E5                20444 	push	hl
+                          20445 ; genCall
+   1332 CD 00 00          20446 	call	_printf
+   1335 E8 02             20447 	lda	sp,2(sp)
+                          20448 ; genLabel
+   1337                   20449 00145$:
+                          20450 ;	main.c 339
+                          20451 ; genCmpGt
+                          20452 ; AOP_HL for _y
+   1337 AF                20453 	xor	a,a
+   1338 3E 1E             20454 	ld	a,#0x1E
+   133A 21 F7 09          20455 	ld	hl,#_y + 0
+   133D 9E                20456 	sbc	a,(hl) ; 2
+   133E DA 70 13          20457 	jp	c,00156$
+                          20458 ;	main.c 340
+                          20459 ; genAnd
+                          20460 ; AOP_SFR for _LCDC_REG
+   1341 F0 00             20461 	ldh	a,(_LCDC_REG+0) ; x
+   1343 E6 FD             20462 	and	a,#0xFD
+   1345 E0 00             20463 	ldh	(_LCDC_REG+0),a
+                          20464 ;	main.c 341
+                          20465 ; genIpush
+   1347 3E 05             20466 	ld	a,#0x05
+   1349 F5                20467 	push	af
+   134A 33                20468 	inc	sp
+                          20469 ; genCall
+   134B CD BD 08          20470 	call	_performantdelay
+   134E E8 01             20471 	lda	sp,1(sp)
+                          20472 ;	main.c 342
+                          20473 ; genMinus
+                          20474 ; AOP_STK for _main_mapy_1_1
+   1350 3E D8             20475 	ld	a,#0xD8
+   1352 F8 19             20476 	lda	hl,25(sp)
+   1354 96                20477 	sub	a,(hl)
+   1355 4F                20478 	ld	c,a
+                          20479 ; genUminus
+                          20480 ; AOP_STK for _main_mapx_1_1
+   1356 AF                20481 	xor	a,a
+   1357 23                20482 	inc	hl
+   1358 3E 00             20483 	ld	a,#0x00
+   135A 9E                20484 	sbc	a,(hl)
+   135B 47                20485 	ld	b,a
+                          20486 ; genIpush
+   135C 79                20487 	ld	a,c
+   135D F5                20488 	push	af
+   135E 33                20489 	inc	sp
+                          20490 ; genIpush
+   135F 78                20491 	ld	a,b
+   1360 F5                20492 	push	af
+   1361 33                20493 	inc	sp
+                          20494 ; genCall
+   1362 CD 00 00          20495 	call	_scroll_bkg
+   1365 E8 02             20496 	lda	sp,2(sp)
+                          20497 ;	main.c 343
+                          20498 ; genIpush
+   1367 21 90 13          20499 	ld	hl,#__str_3 + 0
+   136A E5                20500 	push	hl
+                          20501 ; genCall
+   136B CD 00 00          20502 	call	_printf
+   136E E8 02             20503 	lda	sp,2(sp)
+                          20504 ; genLabel
+   1370                   20505 00156$:
+                          20506 ; genEndFunction
+   1370 E8 1B             20507 	lda	sp,27(sp)
+   1372 C1                20508 	pop	bc
+   1373 C9                20509 	ret
+   1374                   20510 ___main_end:
+   1374                   20511 __str_0:
+   1374 25 75 20 25 75    20512 	.ascii "%u %u"
+   1379 0A                20513 	.db 0x0A
+   137A 00                20514 	.db 0x00
+   137B                   20515 __str_1:
+   137B 25 75 20 25 75    20516 	.ascii "%u %u"
+   1380 0A                20517 	.db 0x0A
+   1381 00                20518 	.db 0x00
+   1382                   20519 __str_2:
+   1382 20 20 20 20 20 20 20520 	.ascii "      S#F@D3U"
         53 23 46 40 44 33
         55
-   1362 00                20468 	.db 0x00
-   1363                   20469 __str_3:
-   1363 0A                20470 	.db 0x0A
-   1364 0A                20471 	.db 0x0A
-   1365 0A                20472 	.db 0x0A
-   1366 0A                20473 	.db 0x0A
-   1367 0A                20474 	.db 0x0A
-   1368 0A                20475 	.db 0x0A
-   1369 0A                20476 	.db 0x0A
-   136A 0A                20477 	.db 0x0A
-   136B 0A                20478 	.db 0x0A
-   136C 0A                20479 	.db 0x0A
-   136D 0A                20480 	.db 0x0A
-   136E 0A                20481 	.db 0x0A
-   136F 0A                20482 	.db 0x0A
-   1370 0A                20483 	.db 0x0A
-   1371 0A                20484 	.db 0x0A
-   1372 0A                20485 	.db 0x0A
-   1373 0A                20486 	.db 0x0A
-   1374 0A                20487 	.db 0x0A
-   1375 0A                20488 	.db 0x0A
-   1376 0A                20489 	.db 0x0A
-   1377 0A                20490 	.db 0x0A
-   1378 20 20 20 20 20 20 20491 	.ascii "              Voce venceu, f0f0"
-        20 20 20 20 20 20
-        20 20 56 6F 63 65
-        20 76 65 6E 63 65
-        75 2C 20 66 30 66
-        30
-   1397 00                20492 	.db 0x00
-                          20493 	.area _CODE
+   138F 00                20521 	.db 0x00
+   1390                   20522 __str_3:
+   1390 20 56 6F 63 65 20 20523 	.ascii " Voce venceu, f0f0"
+        76 65 6E 63 65 75
+        2C 20 66 30 66 30
+   13A2 00                20524 	.db 0x00
+                          20525 	.area _CODE
 ASxxxx Assembler V01.75  (GameBoy Z80-like CPU), page 1.
 
 Symbol Table
@@ -20563,7 +20591,7 @@ Symbol Table
   0 ___fadein_start                    0926 R
   0 ___fadeout_end                     0926 R
   0 ___fadeout_start                   08D1 R
-  0 ___main_end                        1334 R
+  0 ___main_end                        1374 R
   0 ___main_start                      0DD3 R
   0 ___movegamecharacter_end           09FB R
   0 ___movegamecharacter_start         0971 R
@@ -20600,10 +20628,10 @@ Symbol Table
     __io_out                           **** GX
     __io_status                        **** GX
     __muluchar                         **** GX
-  0 __str_0                            1334 R
-  0 __str_1                            133B R
-  0 __str_2                            1342 R
-  0 __str_3                            1363 R
+  0 __str_0                            1374 R
+  0 __str_1                            137B R
+  0 __str_2                            1382 R
+  0 __str_3                            1390 R
   1 _bonecafixa                        09C3 GR
   1 _bonecafixaback                    09C9 GR
   1 _botatras                          09D5 GR
@@ -20659,7 +20687,7 @@ Symbol Table
 
 Area Table
 
-   0 _CODE                              size 1398   flags 0
+   0 _CODE                              size 13A3   flags 0
    1 _DATA                              size  9FB   flags 0
    2 _OVERLAY                           size    0   flags 0
    3 _ISEG                              size    0   flags 0

@@ -332,10 +332,14 @@ void main(){
 
     if(derrota == 12){
         HIDE_SPRITES;
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n            S#F@D3U");
+        performantdelay(5);
+        scroll_bkg(-mapx, -40-mapy);
+        printf("      S#F@D3U");
     }
     if(y <= 30){
         HIDE_SPRITES; 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n              Voce venceu, f0f0");        
+        performantdelay(5);
+        scroll_bkg(-mapx, -40-mapy);
+        printf(" Voce venceu, f0f0");        
     }
 }
