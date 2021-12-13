@@ -7,6 +7,8 @@
 #include "background.c" //Sprites do mapa
 #include "mapbackground.c" //Geração do mapa com os sprites definidos no background
 #include "score.c"
+#include "sons.c" //configurações de sons
+#include "fadedelay.c"//configurações do fade e do performantdelay
 
 struct GameCharacter principalfrente;
 struct GameCharacter principalatras;
@@ -24,52 +26,6 @@ UINT8 y = 135;
 UINT8 count = 0;
 UINT16 time = 1;
 
-
-void performantdelay(UINT8 numloops){
-    UINT8 j;
-    for(j = 0; j < numloops; j++){
-        wait_vbl_done();
-    }     
-}
-
-void fadeout(){
-    UINT8 f;
-	for(f=0;f<4;f++){
-		switch(f){
-			case 0:
-				BGP_REG = 0xE4;
-				break;
-			case 1:
-				BGP_REG = 0xF9;
-				break;
-			case 2:
-				BGP_REG = 0xFE;
-				break;
-			case 3:
-				BGP_REG = 0xFF;	
-				break;						
-		}
-		performantdelay(10);
-	}
-}
-
-void fadein(){
-    UINT8 f;
-	for(f=0;f<3;f++){
-		switch(f){
-			case 0:
-				BGP_REG = 0xFE;
-				break;
-			case 1:
-				BGP_REG = 0xF9;
-				break;
-			case 2:
-				BGP_REG = 0xE4;
-				break;					
-		}
-		performantdelay(10);
-	}
-}
 
 void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
     move_sprite(character->spritids[0], x, y);
@@ -235,8 +191,12 @@ void setups(){
 void main(){
     INT8 mapx = 44;
     INT8 mapy = 112;
-    INT8 i, flag = 0, flag2 = 2;
+    INT8 i, flag = 0, derrota = 2;
     INT8 game = 1;
+
+    NR52_REG = 0x80; // liga o som
+    NR50_REG = 0x77; // volume máximo
+    NR51_REG = 0xFF; // canais que estão sendo usados(todos)
 
     set_bkg_data(0, 114, sqgame3_data);
     set_bkg_tiles(0, 0, 20, 18, sqgame3_map);
@@ -245,6 +205,7 @@ void main(){
     DISPLAY_ON;
 
     waitpad(J_START);
+    somSelect();
     fadeout();
 
     set_bkg_data(0, 35, TileLabel);
@@ -262,6 +223,7 @@ void main(){
 
         if(joypad() & J_LEFT){
             if(x > 28 ){
+                somAndar();
                 x -= 1;
                 principaldireita.spritids[1] = 8;
                 principaldireita.spritids[0] = 9;
@@ -280,6 +242,7 @@ void main(){
         }
         if(joypad() & J_RIGHT){
             if(x < 129){
+                somAndar();
                 x += 1;
                 principaldireita.spritids[0] = 8;
                 principaldireita.spritids[1] = 9;
@@ -297,6 +260,7 @@ void main(){
         }
         if(joypad() & J_UP){
             if(y > 23){
+                somAndar();
                 y -= 1;
 
                 movegamecharacter(&principalfrente, -10, -10);
@@ -310,6 +274,7 @@ void main(){
         if(joypad() & J_DOWN ){
 
             if(y < 139){
+                somAndar();
                 y += 1;
                 
                 movegamecharacter(&principalatras, -10, -10);
@@ -321,11 +286,13 @@ void main(){
             }
         }
         if(joypad() & J_A){
-            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
+            somViraVolta();
+            //printf("%u %u\n",(UINT16)(x),(UINT16)(y));
+            //printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
             //game = 0;
         }
         if(joypad() & J_B){
+            somVira();
             //game = 2;
         }
 
@@ -333,7 +300,7 @@ void main(){
             if(time == 10){
                 time = 0;
                 set_sprite_tile(timer.spritids[5], timer.spriteTiles[flag2]);
-                flag2++;
+                derrota++;
             }
             time++;
             //printf("Tempo: %d\n",time);
@@ -341,13 +308,12 @@ void main(){
         }
         count++;
 
-        if(flag2 == 12){
+        if(derrota == 12){
             HIDE_SPRITES;
             while(1){
-                printf("\n\n\n\n\n\n\n\n\n\n\n        Se Ferrou, b0b1nh0!");
+                printf("\n\n\n\n\n\n\n\n\n\n\n       S#F@D3U");
                 performantdelay(25);
                 if(joypad()){
-
                     break;
                 }
             }
@@ -368,7 +334,6 @@ void main(){
 
         performantdelay(6);  
 
-        //tela de derrota quando game == 0( no momento apertando A "S")
         //tela de vitoria quando game == 2( no momento apertando B "A")
         /*if(game == 2){
             HIDE_SPRITES;
