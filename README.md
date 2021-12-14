@@ -53,6 +53,9 @@ A ROM do jogo já está disponível na pasta **/scr/main.gb** basta abrir o BGB 
 ## Demonstração
 [Youtube](https://www.youtube.com/watch?v=PkrHKrWi83g)
 
+## Apresentação
+[Slide](https://docs.google.com/presentation/d/1TGqFbc9VS4wpPZFogFQWDFSC-8e132qmVp0z-LKPF0s/edit?usp=sharing)
+
 
 
 ## Autores
