@@ -34,7 +34,6 @@ void movegamecharacter(struct GameCharacter* character, UINT8 x, UINT8 y){
 }
 
 void movetimer(struct ScorePoint *timer, UINT8 x, UINT8 y){
-    //UINT8 i = 0;
     move_sprite(timer->spritids[0], x + 2*spritesize, y);
     move_sprite(timer->spritids[1], x + 3*spritesize, y);
     move_sprite(timer->spritids[2], x + 4*spritesize, y);
@@ -80,43 +79,6 @@ void setupdireita(){
     }
 }
 
-/* void setupbotfrente(){
-    INT8 z, w = 0;
-    botfrente.comprimento = 16;
-    botfrente.largura = 16;
-
-    for(z = 12; z < 16; z++) {
-        set_sprite_tile(z,z);
-        botfrente.spritids[w] = z;
-        w++;
-    }
-} 
-void setupbotatras(){
-    INT8 z, w = 0;
-    botatras.comprimento = 16;
-    botatras.largura = 16;
-
-    for(z = 16; z < 20; z++) {
-        set_sprite_tile(z,z);
-        botatras.spritids[w] = z;
-        w++;
-    }
-    
-    movegamecharacter(&botatras, 100, 140);
-}
-
-void setupbotdireita(){
-    INT8 z, w = 0;
-    botdireita.comprimento = 16;
-    botdireita.largura = 16;
-
-    for(z = 20; z < 24; z++) {
-        set_sprite_tile(z,z);
-        botdireita.spritids[w] = z;
-        w++;
-    }
-} */
-
 void setupbonecafixa(){
     INT8 z, w = 0;
     bonecafixa.comprimento = 16;
@@ -127,7 +89,6 @@ void setupbonecafixa(){
         bonecafixa.spritids[w] = z;
         w++;
     }
-    //movegamecharacterboneca(&bonecafixa, 10, 130);
 } 
 
 void setupbonecafixaback(){
@@ -172,16 +133,12 @@ void setuptimer(){
     }
 
     movetimer(&timer, 96, 152);
-    //move
 }
 
 void setups(){
     setupfrente();
     setupatras();
     setupdireita();
-    //setupbotatras();
-    //setupbotfrente();
-    //setupbotdireita();
     setupbonecafixa();
     setupbonecafixaback();
     setuptimer();
@@ -320,16 +277,6 @@ void main(){
                 } 
             }
         }
-        if(joypad() & J_A){
-            //somViraVolta();
-            printf("%u %u\n",(UINT16)(x),(UINT16)(y));
-            printf("%u %u\n",(UINT16)mapx,(UINT16)mapy); 
-            //game = 0;
-        }
-        if(joypad() & J_B){
-            somVira();
-            //game = 2;
-        }
 
         if(count>=10){ 
             if(flag == 10){
@@ -339,7 +286,6 @@ void main(){
             }
             time++;
             flag++;
-            //printf("Tempo: %d\n",time);
             count = 0;
         }
         count++;
