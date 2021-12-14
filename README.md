@@ -50,6 +50,9 @@ A ROM do jogo já está disponível na pasta **/scr/main.gb** basta abrir o BGB 
 * Start -> Inicia o Jogo.
 * Setas -> Movimenta o Personagem.
 
+## Demonstração
+[Youtube](https://www.youtube.com/watch?v=PkrHKrWi83g)
+
 
 
 ## Autores
